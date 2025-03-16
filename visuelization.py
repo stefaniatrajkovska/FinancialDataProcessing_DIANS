@@ -1,8 +1,5 @@
-#
-import keras.src.ops
 import psycopg2
 import pandas as pd
-from sqlalchemy import create_engine
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from flask import Flask, render_template
@@ -193,59 +190,6 @@ def plot_stock_data(symbol):
     img_b64 = base64.b64encode(img.getvalue()).decode('utf8')
     plt.close(fig)
     return img_b64, mse
-
-
-# def plot_stock_data(symbol):
-#     """Creates visualizations for stock data including predictions and indicators"""
-#     df = fetch_data_from_db(symbol)
-#     if df is None or df.empty:
-#         raise ValueError("No data found for the given symbol.")
-#
-#     # Add 'days_since_start' column
-#     df['date'] = pd.to_datetime(df['date'])
-#     df['days_since_start'] = (df['date'] - df['date'].min()).dt.days
-#
-#     # Generate price chart
-#     fig = plt.figure(figsize=(10, 6))
-#     plt.plot(df['date'], df['close'], label="Close Price", color='blue')
-#
-#     # LINEAR REGRESSION VISUALIZATION
-#     # Train model and plot the regression line
-#     X = df['days_since_start'].values.reshape(-1, 1)
-#     y = df['close'].values
-#     model = LinearRegression()
-#     model.fit(X, y)
-#     df['predicted_close'] = model.predict(X)
-#     mse = mean_squared_error(y, df['predicted_close'])
-#
-#     # Plot regression line (trend line) on chart
-#     plt.plot(df['date'], df['predicted_close'], label="Linear Regression", color='orange', linestyle='--')
-#
-#     # Calculate and plot 3-day moving average
-#     df['moving_average'] = df['close'].rolling(window=3).mean()
-#     plt.plot(df['date'], df['moving_average'], label="3-Day Moving Average", color='green')
-#
-#     # Calculate and plot daily percent changes
-#     df['daily_change'] = df['close'].pct_change() * 100
-#     plt.plot(df['date'], df['daily_change'], label="Daily Change", color='red')
-#
-#     # Calculate and plot 3-day volatility (standard deviation)
-#     df['volatility'] = df['close'].rolling(window=3).std()
-#     plt.plot(df['date'], df['volatility'], label="Volatility", color='purple')
-#
-#     # Add chart labels and legend
-#     plt.legend()
-#     plt.title(f"Stock Prices for {symbol}")
-#     plt.xlabel("Date")
-#     plt.ylabel("Price")
-#
-#     # Convert plot to base64 encoded image for web display
-#     img = io.BytesIO()
-#     plt.savefig(img, format='png')
-#     img.seek(0)
-#     img_b64 = base64.b64encode(img.getvalue()).decode('utf8')
-#     plt.close(fig)
-#     return img_b64, mse
 
 
 # FLASK ROUTES
