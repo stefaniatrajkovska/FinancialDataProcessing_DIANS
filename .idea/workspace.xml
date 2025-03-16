@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e759dfb9-3b29-48cf-826d-d97932602b06" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dians_project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dians_project.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoint/financial_data/commits/.1363.crc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoint/financial_data/commits/1363" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoint/financial_data/offsets/.1363.crc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/checkpoint/financial_data/offsets/1363" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/producer.py" beforeDir="false" afterPath="$PROJECT_DIR$/producer.py" afterDir="false" />
-    </list>
+    <list default="true" id="e759dfb9-3b29-48cf-826d-d97932602b06" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -255,7 +246,7 @@
       <workItem from="1742043707830" duration="562000" />
       <workItem from="1742058797092" duration="3606000" />
       <workItem from="1742062528604" duration="426000" />
-      <workItem from="1742063107735" duration="21363000" />
+      <workItem from="1742063107735" duration="21758000" />
     </task>
     <servers />
   </component>

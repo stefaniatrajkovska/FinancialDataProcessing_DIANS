@@ -110,30 +110,6 @@
     <div class="container animate__animated animate__fadeIn">
         <h1>📊 Stock Data for {{ symbol }}</h1>
 
-        <!-- Chart Container -->
-<!--        <div class="chart-container">-->
-<!--            {% if img_b64 %}-->
-<!--                <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Chart" class="animate__animated animate__fadeIn">-->
-<!--            {% else %}-->
-<!--                <p class="error-message animate__animated animate__shakeX">{{ error }}</p>-->
-<!--            {% endif %}-->
-<!--        </div>-->
-
-        <!-- Chart Container -->
-
-
-
-<!--<div class="chart-container">-->
-<!--    {% if img_b64 %}-->
-<!--        <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Chart" class="animate__animated animate__fadeIn">-->
-<!--        <p class="mse-text animate__animated animate__fadeIn">-->
-<!--            <strong>📉 Mean Squared Error (MSE):</strong> {{ mse|round(2) }}-->
-<!--        </p>-->
-<!--    {% else %}-->
-<!--        <p class="error-message animate__animated animate__shakeX">{{ error }}</p>-->
-<!--    {% endif %}-->
-<!--</div>-->
-
          <!-- Historical Data Button -->
         <div class="text-center mt-4">
             <a href="/historical_data/{{ symbol }}" class="btn btn-primary">Historical Data</a>
