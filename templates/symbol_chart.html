@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Stock Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+        .symbol-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            margin: 0 auto;
+            width: 60%;
+        }
+        .symbol-item {
+            padding: 15px 20px;
+            background-color: #2a5298;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 16px;
+            text-align: center;
+        }
+        .symbol-item:hover {
+            background-color: #1a3a6e;
+        }
+        .refresh-status {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .loading-indicator {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Select a Symbol</h1>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search for a symbol..." oninput="filterSymbols()">
+        </div>
+
+        <!-- Symbol List -->
+        <div class="symbol-list" id="symbolList">
+            {% for symbol in symbols %}
+                <div class="symbol-item" onclick="window.location.href='/symbol/{{ symbol }}'">{{ symbol }}</div>
+            {% endfor %}
+        </div>
+
+        <!-- Refresh Status -->
+        <div class="refresh-status" id="refreshStatus">
+            Loading symbols <span class="loading-indicator"></span>
+        </div>
+    </div>
+
+    <script>
+        let symbolCount = 0;
+        let refreshIntervalId = null;
+        const refreshInterval = 10000; // 10 seconds
+
+        // Initial count of symbols
+        function countInitialSymbols() {
+            const symbolList = document.getElementById('symbolList');
+            symbolCount = symbolList.getElementsByClassName('symbol-item').length;
+            updateRefreshStatus();
+        }
+
+        // Function to refresh the symbol list
+        function refreshSymbolList() {
+            fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newSymbolList = doc.getElementById('symbolList');
+
+                    if (newSymbolList) {
+                        const newSymbols = newSymbolList.getElementsByClassName('symbol-item');
+                        const newSymbolCount = newSymbols.length;
+
+                        // If we have new symbols, update the list
+                        if (newSymbolCount > symbolCount) {
+                            document.getElementById('symbolList').innerHTML = newSymbolList.innerHTML;
+                            symbolCount = newSymbolCount;
+                            updateRefreshStatus();
+
+                            // Reapply any search filter that was in place
+                            filterSymbols();
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error refreshing symbol list:', error);
+                });
+        }
+
+        // Update the refresh status text
+        function updateRefreshStatus() {
+            const refreshStatusElement = document.getElementById('refreshStatus');
+            refreshStatusElement.innerHTML = `Loaded ${symbolCount} symbols. Auto-refreshing... <span class="loading-indicator"></span>`;
+        }
+
+        // Function to filter symbols based on search input
+        function filterSymbols() {
+            const input = document.getElementById('searchInput').value.toUpperCase();
+            const symbolList = document.getElementById('symbolList');
+            const symbols = symbolList.getElementsByClassName('symbol-item');
+
+            for (let i = 0; i < symbols.length; i++) {
+                const symbol = symbols[i].textContent.toUpperCase();
+                if (symbol.indexOf(input) > -1) {
+                    symbols[i].style.display = '';
+                } else {
+                    symbols[i].style.display = 'none';
+                }
+            }
+        }
+
+        // Initialize and start refreshing
+        document.addEventListener('DOMContentLoaded', function() {
+            countInitialSymbols();
+            refreshIntervalId = setInterval(refreshSymbolList, refreshInterval);
+
+            // Stop refreshing after 10 minutes (optional, remove if you want continuous refreshing)
+            setTimeout(function() {
+                if (refreshIntervalId) {
+                    clearInterval(refreshIntervalId);
+                    document.getElementById('refreshStatus').textContent = `Loaded ${symbolCount} symbols. Auto-refresh stopped.`;
+                }
+            }, 600000); // 10 minutes
+        });
+    </script>
+</body>
+</html>

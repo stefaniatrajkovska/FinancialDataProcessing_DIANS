@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Stock Data - {{ symbol }}</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chart-container {
+            background-color: #000;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .symbol-header-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            border-left: 4px solid #00FF88;
+        }
+        .symbol-logo {
+            font-size: 28px;
+            font-weight: bold;
+            background-color: #2a5298;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        .symbol-info {
+            flex-grow: 1;
+        }
+        .symbol-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00FF88;
+            margin-bottom: 3px;
+        }
+        .company-name {
+            font-size: 14px;
+            color: #aaa;
+        }
+        .price-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .current-price {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+        }
+        .price-change {
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+        .price-up {
+            background-color: rgba(0, 255, 136, 0.2);
+            color: #00FF88;
+        }
+        .price-down {
+            background-color: rgba(255, 77, 77, 0.2);
+            color: #FF4D4D;
+        }
+        .chart-options {
+            display: flex;
+            margin-bottom: 15px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        .chart-option {
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+        .chart-option.active {
+            background-color: #2a5298;
+            color: white;
+        }
+        #graph {
+            width: 100%;
+            height: 500px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .metric-card {
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 15px;
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-5px);
+        }
+        .metric-title {
+            font-size: 12px;
+            color: #aaa;
+            margin-bottom: 8px;
+        }
+        .metric-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+        .date-info {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #aaa;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #2a5298;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            transition: background-color 0.2s;
+        }
+        .back-button:hover {
+            background-color: #1a3a6e;
+        }
+        .time-selector {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 5px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .time-option {
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        .time-option.active {
+            background-color: #2a5298;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chart-container">
+            <!-- Improved symbol header -->
+            <div class="symbol-header-container">
+                <div class="symbol-logo">{{ symbol[0] }}</div>
+                <div class="symbol-info">
+                    <div class="symbol-name">{{ symbol }}</div>
+
+                </div>
+                <div class="price-indicator">
+                    <div class="current-price" id="currentPrice">-</div>
+                    <div class="price-change" id="priceChange">-</div>
+                </div>
+            </div>
+
+            <div class="chart-options">
+                <div class="chart-option" data-type="line">Line</div>
+                <div class="chart-option active" data-type="candlestick">Candlestick</div>
+                <div class="chart-option" data-type="ohlc">OHLC</div>
+            </div>
+            <div id="graph"></div>
+
+            <div class="date-info" id="dateInfo">Last Update: Loading...</div>
+        </div>
+
+        <!-- Improved metrics grid - with only available data -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-title">Previous Close</div>
+                <div class="metric-value" id="prevClose">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Open</div>
+                <div class="metric-value" id="openPrice">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Day's Range</div>
+                <div class="metric-value" id="daysRange">-</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-title">Volume</div>
+                <div class="metric-value" id="volume">-</div>
+            </div>
+        </div>
+
+        <!-- Back button to return to the symbols list -->
+        <a href="/" class="back-button">Back to Symbols List</a>
+    </div>
+
+    <script>
+        const symbol = "{{ symbol }}";
+        let currentChartType = 'candlestick';
+        let updateIntervalId = null;
+        let updateInterval = 60000; // Default: 1 minute
+        let timeInterval = '1d'; // Default time interval
+
+        function formatNumber(num) {
+            if (num >= 1000000000) {
+                return (num / 1000000000).toFixed(2) + 'B';
+            }
+            if (num >= 1000000) {
+                return (num / 1000000).toFixed(2) + 'M';
+            }
+            if (num >= 1000) {
+                return (num / 1000).toFixed(2) + 'K';
+            }
+            return num.toFixed(2);
+        }
+
+        function updateGraph() {
+            console.log("Updating chart...");
+            fetch(`/data/${symbol}?interval=${timeInterval}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Received data:", data);
+
+                    if (!data || data.length === 0) {
+                        console.log("No data received");
+                        return;
+                    }
+
+                    const traces = [];
+
+                    data.forEach(symbolData => {
+                        if (!symbolData.x || symbolData.x.length === 0) return;
+
+                        const trace = {
+                            x: symbolData.x,
+                            name: symbolData.name
+                        };
+
+                        if (currentChartType === 'candlestick') {
+                            trace.open = symbolData.open;
+                            trace.high = symbolData.high;
+                            trace.low = symbolData.low;
+                            trace.close = symbolData.close;
+                            trace.type = 'candlestick';
+                            trace.increasing = { line: { color: '#00FF88' }, fillcolor: '#00FF88' };
+                            trace.decreasing = { line: { color: '#FF4D4D' }, fillcolor: '#FF4D4D' };
+                        } else if (currentChartType === 'line') {
+                            trace.y = symbolData.close;
+                            trace.type = 'scatter';
+                            trace.mode = 'lines';
+                            trace.line = { color: '#00FF88', width: 2 };
+                        } else if (currentChartType === 'ohlc') {
+                            trace.open = symbolData.open;
+                            trace.high = symbolData.high;
+                            trace.low = symbolData.low;
+                            trace.close = symbolData.close;
+                            trace.type = 'ohlc';
+                            trace.increasing = { line: { color: '#00FF88' } };
+                            trace.decreasing = { line: { color: '#FF4D4D' } };
+                        }
+
+                        traces.push(trace);
+
+                        if (symbolData.volume) {
+                            const volumeTrace = {
+                                x: symbolData.x,
+                                y: symbolData.volume,
+                                type: 'bar',
+                                name: symbolData.name + ' Volume',
+                                marker: { color: '#2a5298' },
+                                yaxis: 'y2'
+                            };
+                            traces.push(volumeTrace);
+                        }
+
+                        // Update the UI with the latest price data
+                        if (symbolData.close && symbolData.close.length > 0) {
+                            const lastPrice = symbolData.close[symbolData.close.length - 1];
+                            const prevClose = symbolData.prevClose || (symbolData.close.length > 1 ? symbolData.close[symbolData.close.length - 2] : lastPrice);
+                            const priceChange = lastPrice - prevClose;
+                            const percentChange = (priceChange / prevClose) * 100;
+
+                            document.getElementById('currentPrice').textContent = '$' + lastPrice.toFixed(2);
+
+                            const changeElement = document.getElementById('priceChange');
+                            changeElement.textContent = (priceChange >= 0 ? '+' : '') +
+                                                        priceChange.toFixed(2) + ' (' +
+                                                        (percentChange >= 0 ? '+' : '') +
+                                                        percentChange.toFixed(2) + '%)';
+
+                            if (priceChange >= 0) {
+                                changeElement.classList.add('price-up');
+                                changeElement.classList.remove('price-down');
+                            } else {
+                                changeElement.classList.add('price-down');
+                                changeElement.classList.remove('price-up');
+                            }
+
+                            // Update metrics
+                            document.getElementById('prevClose').textContent = '$' + prevClose.toFixed(2);
+                            document.getElementById('openPrice').textContent = '$' + (symbolData.open[symbolData.open.length - 1]).toFixed(2);
+                            document.getElementById('daysRange').textContent = '$' +
+                                (symbolData.low[symbolData.low.length - 1]).toFixed(2) + ' - $' +
+                                (symbolData.high[symbolData.high.length - 1]).toFixed(2);
+
+                            // Update volume
+                            if (symbolData.volume && symbolData.volume.length > 0) {
+                                const latestVolume = symbolData.volume[symbolData.volume.length - 1];
+                                document.getElementById('volume').textContent = formatNumber(latestVolume);
+                            }
+                        }
+                    });
+
+                    const layout = {
+                        plot_bgcolor: '#000',
+                        paper_bgcolor: '#000',
+                        font: { color: '#fff' },
+                        margin: { t: 20, r: 50, b: 30, l: 50 },
+                        xaxis: {
+                            rangeslider: { visible: false },
+                            showgrid: true,
+                            gridcolor: '#333',
+                            tickangle: -45,
+                            tickformat: timeInterval === '1d' ? '%H:%M:%S' : '%b %d'
+                        },
+                        yaxis: {
+                            showgrid: true,
+                            gridcolor: '#333',
+                            side: 'right'
+                        },
+                        yaxis2: {
+                            showgrid: false,
+                            overlaying: 'y',
+                            side: 'right',
+                            showticklabels: false
+                        },
+                        showlegend: false,
+                        hovermode: 'x unified'
+                    };
+
+                    Plotly.newPlot('graph', traces, layout, {responsive: true});
+
+                    // Update the date information
+                    if (data.length > 0 && data[0].x && data[0].x.length > 0) {
+                        const latestDate = new Date(data[0].x[data[0].x.length - 1]);
+                        document.getElementById('dateInfo').textContent = `Last Update: ${latestDate.toLocaleString()}`;
+                    }
+                })
+                .catch(err => {
+                    console.error('Error fetching data:', err);
+                });
+        }
+
+        document.querySelectorAll('.chart-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.chart-option').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                currentChartType = this.dataset.type;
+                updateGraph();
+            });
+        });
+
+        document.querySelectorAll('.time-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.time-option').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+                timeInterval = this.dataset.interval;
+                updateGraph();
+            });
+        });
+
+        updateIntervalId = setInterval(updateGraph, updateInterval);
+        updateGraph();
+    </script>
+</body>
+</html>
