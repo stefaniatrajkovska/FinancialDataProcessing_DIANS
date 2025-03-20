@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 # Kafka Configuration
 KAFKA_BROKER = "localhost:9092"
 KAFKA_TOPIC = "financial_data"
-CSV_FILE_PATH = "nasdaq_symbols.csv"
+CSV_FILE_PATH = "../data_scraping/nasdaq_symbols.csv"
 
 
 def delivery_report(err, msg):

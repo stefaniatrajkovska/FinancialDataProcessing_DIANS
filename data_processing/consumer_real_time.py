@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # Flask App
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../visuelization/templates')
 
 # Global DataFrame to store data
 data_df = pd.DataFrame(columns=['Symbol', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])

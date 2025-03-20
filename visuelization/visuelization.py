@@ -16,7 +16,7 @@ DB_USER = "postgres"
 DB_PASSWORD = "financialdataproject"
 
 # Initialize Flask application
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../visuelization/templates')
 
 
 def fetch_all_symbols():
@@ -243,9 +243,8 @@ def historical_data(symbol):
         return render_template('historical_data.html', error="No data found for the given symbol.", symbol=symbol)
 
     # Generate chart for historical prices
-    fig, ax = plt.subplots(figsize=(10, 5))  # Помал график
+    fig, ax = plt.subplots(figsize=(10, 5))
 
-    # Цртање на Open, High, Low, Close цени
     ax.plot(df["date"], df["open"], label="Open Price", linestyle="dashed")
     ax.plot(df["date"], df["high"], label="High Price", linestyle="solid", color="green")
     ax.plot(df["date"], df["low"], label="Low Price", linestyle="solid", color="red")
@@ -258,7 +257,6 @@ def historical_data(symbol):
     ax.set_xticklabels(df["date"], rotation=45)
     ax.grid()
 
-    # Спремање на графиката во меморијата како слика base64
     img = io.BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)
