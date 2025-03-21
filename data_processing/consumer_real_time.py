@@ -55,8 +55,8 @@ def create_kafka_consumer():
     """Create and return a Kafka consumer instance"""
     conf = {
         'bootstrap.servers': 'localhost:9092',
-        'group.id': 'flask_consumer',
-        'auto.offset.reset': 'earliest',  # Changed to 'earliest' to get all historical data
+        'group.id': f'flask_consumer_{int(time.time())}',
+        'auto.offset.reset': 'latest',
         'session.timeout.ms': 6000,
         'max.poll.interval.ms': 6000000
     }
@@ -140,7 +140,8 @@ threading.Thread(target=consume_messages, daemon=True).start()
 @app.route('/')
 def index():
     global data_df
-    symbols = sorted(data_df['Symbol'].unique())
+    symbols = sorted(data_df['Symbol'].unique().tolist())
+    logger.info(f"Available symbols in data_df: {symbols}")
     return render_template('symbol_chart.html', symbols=symbols)
 
 

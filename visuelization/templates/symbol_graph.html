@@ -172,6 +172,73 @@
             background-color: #2a5298;
             color: white;
         }
+        .refresh-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px; /* Increased margin from 15px */
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 15px; /* Increased padding */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow for better styling */
+            border-left: 4px solid #2a5298; /* Added accent border */
+        }
+        .refresh-status {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px; /* Increased spacing */
+            box-shadow: 0 0 5px currentColor; /* Added glow effect */
+        }
+        .status-active {
+            background-color: #00FF88;
+        }
+        .status-inactive {
+            background-color: #FF4D4D;
+        }
+        select {
+            background-color: #2a5298;
+            color: white;
+            border: none;
+            padding: 8px 12px; /* Increased padding */
+            border-radius: 6px; /* More rounded corners */
+            margin-right: 12px; /* Increased spacing */
+            cursor: pointer;
+        }
+        button {
+            background-color: #2a5298;
+            color: white;
+            border: none;
+            padding: 8px 16px; /* Increased padding */
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-right: 8px; /* Added spacing between buttons */
+        }
+        button:hover {
+            background-color: #1a3a6e;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(1px);
+        }
+        #refreshTimer {
+            font-size: 13px; /* Slightly larger */
+            color: #bbb; /* Lighter color for better visibility */
+            margin-left: 10px;
+            font-weight: 500; /* Semi-bold */
+            background-color: rgba(42, 82, 152, 0.3); /* Light background */
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        #statusText {
+            font-weight: 500; /* Semi-bold for better visibility */
+        }
     </style>
 </head>
 <body>
@@ -182,7 +249,6 @@
                 <div class="symbol-logo">{{ symbol[0] }}</div>
                 <div class="symbol-info">
                     <div class="symbol-name">{{ symbol }}</div>
-
                 </div>
                 <div class="price-indicator">
                     <div class="current-price" id="currentPrice">-</div>
@@ -190,9 +256,28 @@
                 </div>
             </div>
 
+            <!-- Auto-refresh controls - Improved styling and spacing -->
+            <div class="refresh-controls">
+                <div class="refresh-status">
+                    <div id="statusIndicator" class="status-indicator status-active"></div>
+                    <span id="statusText">Auto-refresh: Active</span>
+                </div>
+                <select id="refreshInterval">
+                    <option value="5000">5 seconds</option>
+                    <option value="10000">10 seconds</option>
+                    <option value="30000">30 seconds</option>
+                    <option value="60000" selected>1 minute</option>
+                    <option value="300000">5 minutes</option>
+                </select>
+                <button id="toggleRefresh">Pause</button>
+                <button id="refreshNow">Refresh Now</button>
+                <div id="refreshTimer"></div>
+            </div>
+
+            <!-- Chart options - Now with Line as active option -->
             <div class="chart-options">
-                <div class="chart-option" data-type="line">Line</div>
-                <div class="chart-option active" data-type="candlestick">Candlestick</div>
+                <div class="chart-option active" data-type="line">Line</div>
+                <div class="chart-option" data-type="candlestick">Candlestick</div>
                 <div class="chart-option" data-type="ohlc">OHLC</div>
             </div>
             <div id="graph"></div>
@@ -226,10 +311,13 @@
 
     <script>
         const symbol = "{{ symbol }}";
-        let currentChartType = 'candlestick';
+        let currentChartType = 'line'; // Changed from 'candlestick' to 'line'
         let updateIntervalId = null;
         let updateInterval = 60000; // Default: 1 minute
         let timeInterval = '1d'; // Default time interval
+        let autoRefreshActive = true;
+        let countdownInterval = null;
+        let nextRefreshTime = Date.now() + updateInterval;
 
         function formatNumber(num) {
             if (num >= 1000000000) {
@@ -246,6 +334,8 @@
 
         function updateGraph() {
             console.log("Updating chart...");
+            document.getElementById('dateInfo').textContent = 'Last Update: Loading...';
+
             fetch(`/data/${symbol}?interval=${timeInterval}`)
                 .then(response => response.json())
                 .then(data => {
@@ -253,6 +343,7 @@
 
                     if (!data || data.length === 0) {
                         console.log("No data received");
+                        document.getElementById('dateInfo').textContent = 'Last Update: No data available';
                         return;
                     }
 
@@ -375,12 +466,103 @@
                         const latestDate = new Date(data[0].x[data[0].x.length - 1]);
                         document.getElementById('dateInfo').textContent = `Last Update: ${latestDate.toLocaleString()}`;
                     }
+
+                    // Reset the refresh countdown timer
+                    resetRefreshTimer();
                 })
                 .catch(err => {
                     console.error('Error fetching data:', err);
+                    document.getElementById('dateInfo').textContent = 'Last Update: Error fetching data';
                 });
         }
 
+        function toggleAutoRefresh() {
+            autoRefreshActive = !autoRefreshActive;
+
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const toggleButton = document.getElementById('toggleRefresh');
+
+            if (autoRefreshActive) {
+                statusIndicator.classList.remove('status-inactive');
+                statusIndicator.classList.add('status-active');
+                statusText.textContent = 'Auto-refresh: Active';
+                toggleButton.textContent = 'Pause';
+
+                // Start the interval timer
+                if (updateIntervalId === null) {
+                    updateIntervalId = setInterval(updateGraph, updateInterval);
+                    resetRefreshTimer();
+                }
+            } else {
+                statusIndicator.classList.remove('status-active');
+                statusIndicator.classList.add('status-inactive');
+                statusText.textContent = 'Auto-refresh: Paused';
+                toggleButton.textContent = 'Resume';
+
+                // Clear the interval timer
+                if (updateIntervalId !== null) {
+                    clearInterval(updateIntervalId);
+                    updateIntervalId = null;
+                }
+
+                // Clear countdown timer
+                if (countdownInterval !== null) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                    document.getElementById('refreshTimer').textContent = '';
+                }
+            }
+        }
+
+        function updateRefreshInterval() {
+            const newInterval = parseInt(document.getElementById('refreshInterval').value);
+
+            // Only update if the value has changed
+            if (newInterval !== updateInterval) {
+                updateInterval = newInterval;
+
+                // Reset the interval if auto-refresh is active
+                if (autoRefreshActive) {
+                    if (updateIntervalId !== null) {
+                        clearInterval(updateIntervalId);
+                    }
+                    updateIntervalId = setInterval(updateGraph, updateInterval);
+                    resetRefreshTimer();
+                }
+            }
+        }
+
+        function resetRefreshTimer() {
+            // Clear existing countdown
+            if (countdownInterval !== null) {
+                clearInterval(countdownInterval);
+            }
+
+            // Only setup countdown if auto-refresh is active
+            if (autoRefreshActive) {
+                nextRefreshTime = Date.now() + updateInterval;
+
+                // Update the countdown display immediately
+                updateCountdown();
+
+                // Set up the countdown interval
+                countdownInterval = setInterval(updateCountdown, 1000);
+            }
+        }
+
+        function updateCountdown() {
+            const remaining = nextRefreshTime - Date.now();
+
+            if (remaining <= 0) {
+                document.getElementById('refreshTimer').textContent = 'Refreshing...';
+            } else {
+                const seconds = Math.ceil(remaining / 1000);
+                document.getElementById('refreshTimer').textContent = `Next refresh in ${seconds}s`;
+            }
+        }
+
+        // Event listeners for chart type selection
         document.querySelectorAll('.chart-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.chart-option').forEach(el => el.classList.remove('active'));
@@ -390,6 +572,7 @@
             });
         });
 
+        // Event listeners for time interval selection
         document.querySelectorAll('.time-option').forEach(option => {
             option.addEventListener('click', function() {
                 document.querySelectorAll('.time-option').forEach(el => el.classList.remove('active'));
@@ -399,8 +582,38 @@
             });
         });
 
+        // Event listeners for refresh controls
+        document.getElementById('toggleRefresh').addEventListener('click', toggleAutoRefresh);
+        document.getElementById('refreshNow').addEventListener('click', updateGraph);
+        document.getElementById('refreshInterval').addEventListener('change', updateRefreshInterval);
+
+        // Initialize with default values
         updateIntervalId = setInterval(updateGraph, updateInterval);
         updateGraph();
+        resetRefreshTimer();
+
+        // Add page visibility event handler to pause/resume auto-refresh
+        document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+                // Page is hidden, pause auto-refresh to save resources
+                if (autoRefreshActive && updateIntervalId !== null) {
+                    clearInterval(updateIntervalId);
+                    updateIntervalId = null;
+
+                    if (countdownInterval !== null) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                    }
+                }
+            } else {
+                // Page is visible again, resume auto-refresh if it was active
+                if (autoRefreshActive && updateIntervalId === null) {
+                    updateGraph(); // Refresh immediately
+                    updateIntervalId = setInterval(updateGraph, updateInterval);
+                    resetRefreshTimer();
+                }
+            }
+        });
     </script>
 </body>
 </html>
