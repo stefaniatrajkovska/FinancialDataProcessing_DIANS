@@ -12,7 +12,7 @@ all_data = []
 for symbol in symbols:
     try:
         stock = yf.Ticker(symbol)
-        hist = stock.history(period="5d")  # Fetching the last 5 days of data
+        hist = stock.history(period="1mo")  # Fetching data for the last month
 
         # Adding the "Symbol" column
         hist.insert(0, "Symbol", symbol)

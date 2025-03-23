@@ -6,7 +6,7 @@ from pyspark.sql.types import StructType, StructField, StringType, DoubleType
 
 # Kafka Configuration
 KAFKA_BROKER = "localhost:9092"
-KAFKA_TOPIC = "financial_data"
+KAFKA_TOPIC = "historical_financial_data"
 
 DB_HOST = "localhost"
 DB_PORT = "5432"
@@ -70,6 +70,8 @@ spark = SparkSession.builder \
     .config("spark.sql.shuffle.partitions", "10") \
     .config("spark.jars.packages", "org.postgresql:postgresql:42.7.2") \
     .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0") \
+    .config("kafka.consumer.id", "historical_data_consumer") \
+    .config("group.id", "historical_data_group") \
     .getOrCreate()
 
 # Define Schema for Incoming Data
@@ -88,7 +90,8 @@ raw_stream = spark.readStream \
     .format("kafka") \
     .option("kafka.bootstrap.servers", KAFKA_BROKER) \
     .option("subscribe", KAFKA_TOPIC) \
-    .option("startingOffsets", "latest") \
+    .option("startingOffsets", "earliest") \
+    .option("group.id", "historical_data_group") \
     .load()
 
 # Deserialize JSON Data
@@ -127,7 +130,7 @@ query = parsed_df.writeStream \
     .outputMode("append") \
     .foreachBatch(write_to_postgresql) \
     .option("truncate", False) \
-    .option("checkpointLocation", "checkpoint/financial_data") \
+    .option("checkpointLocation", "checkpoint/historical_financial_data") \
     .start()
 
 query.awaitTermination()

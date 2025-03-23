@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e759dfb9-3b29-48cf-826d-d97932602b06" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/db_symbols.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/stock.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/db_symbols_data_graph.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/visuelization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/visuelization.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_processing/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/consumer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_processing/producer.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/producer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_scraping/scraping_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/scraping_data.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,42 +58,43 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;Python.analysis.executor&quot;: &quot;Run&quot;,
-    &quot;Python.app.executor&quot;: &quot;Run&quot;,
-    &quot;Python.consumer.executor&quot;: &quot;Run&quot;,
-    &quot;Python.consumer_real_time (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.consumer_real_time.executor&quot;: &quot;Run&quot;,
-    &quot;Python.consumer_websocket.executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_ingestion (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.data_visualisation.executor&quot;: &quot;Run&quot;,
-    &quot;Python.database_data.executor&quot;: &quot;Run&quot;,
-    &quot;Python.format.executor&quot;: &quot;Run&quot;,
-    &quot;Python.machine_learning.executor&quot;: &quot;Run&quot;,
-    &quot;Python.producer.executor&quot;: &quot;Run&quot;,
-    &quot;Python.producer_real_time (1).executor&quot;: &quot;Run&quot;,
-    &quot;Python.producer_real_time.executor&quot;: &quot;Run&quot;,
-    &quot;Python.real_time.executor&quot;: &quot;Run&quot;,
-    &quot;Python.real_time_processing.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scraping.executor&quot;: &quot;Run&quot;,
-    &quot;Python.scraping_symbols.executor&quot;: &quot;Run&quot;,
-    &quot;Python.symbols.executor&quot;: &quot;Run&quot;,
-    &quot;Python.visuelization.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/noneee/PycharmProjects/dians_project&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.analysis.executor": "Run",
+    "Python.app.executor": "Run",
+    "Python.consumer.executor": "Run",
+    "Python.consumer_real_time (1).executor": "Run",
+    "Python.consumer_real_time.executor": "Run",
+    "Python.consumer_websocket.executor": "Run",
+    "Python.data_ingestion (1).executor": "Run",
+    "Python.data_visualisation.executor": "Run",
+    "Python.database_data.executor": "Run",
+    "Python.format.executor": "Run",
+    "Python.machine_learning.executor": "Run",
+    "Python.producer.executor": "Run",
+    "Python.producer_real_time (1).executor": "Run",
+    "Python.producer_real_time.executor": "Run",
+    "Python.real_time.executor": "Run",
+    "Python.real_time_processing.executor": "Run",
+    "Python.scraping.executor": "Run",
+    "Python.scraping_data.executor": "Run",
+    "Python.scraping_symbols.executor": "Run",
+    "Python.symbols.executor": "Run",
+    "Python.visuelization.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/noneee/PycharmProjects/dians_project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\noneee\PycharmProjects\dians_project\data_processing" />
@@ -102,7 +104,7 @@
       <recent name="C:\Users\noneee\PycharmProjects\dians_project\templates" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.consumer_real_time">
+  <component name="RunManager" selected="Python.visuelization">
     <configuration name="consumer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dians_project" />
       <option name="ENV_FILES" value="" />
@@ -149,7 +151,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="producer_real_time (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="producer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dians_project" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -163,30 +165,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_processing/producer_real_time.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="producer_real_time" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="dians_project" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_processing" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\noneee\PycharmProjects\dians_project\producer_real_time.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_processing/producer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -241,6 +220,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="scraping_data" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="dians_project" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data_scraping" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data_scraping/scraping_data.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="visuelization" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="dians_project" />
       <option name="ENV_FILES" value="" />
@@ -266,11 +268,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.consumer_real_time" />
-        <item itemvalue="Python.producer_real_time (1)" />
-        <item itemvalue="Python.producer_real_time" />
         <item itemvalue="Python.visuelization" />
         <item itemvalue="Python.consumer" />
+        <item itemvalue="Python.producer" />
+        <item itemvalue="Python.scraping_data" />
+        <item itemvalue="Python.consumer_real_time" />
       </list>
     </recent_temporary>
   </component>
@@ -309,7 +311,7 @@
       <workItem from="1742043707830" duration="562000" />
       <workItem from="1742058797092" duration="3606000" />
       <workItem from="1742062528604" duration="426000" />
-      <workItem from="1742063107735" duration="89136000" />
+      <workItem from="1742063107735" duration="98975000" />
     </task>
     <servers />
   </component>
@@ -321,18 +323,19 @@
     <SUITE FILE_PATH="coverage/dians_project$consumer_real_time__1_.coverage" NAME="consumer_real_time Coverage Results" MODIFIED="1742506604251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$scraping_symbols.coverage" NAME="scraping_symbols Coverage Results" MODIFIED="1742506873114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_scraping" />
     <SUITE FILE_PATH="coverage/dians_project$consumer_websocket.coverage" NAME="consumer_websocket Coverage Results" MODIFIED="1742208044937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/dians_project$scraping_data.coverage" NAME="scraping_data Coverage Results" MODIFIED="1742726856495" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_scraping" />
     <SUITE FILE_PATH="coverage/dians_project$real_time.coverage" NAME="real_time Coverage Results" MODIFIED="1742207397530" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dians_project$format.coverage" NAME="format Coverage Results" MODIFIED="1741903466367" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dians_project$machine_learning.coverage" NAME="machine_learning Coverage Results" MODIFIED="1742043048923" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dians_project$consumer.coverage" NAME="consumer Coverage Results" MODIFIED="1742508652429" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
+    <SUITE FILE_PATH="coverage/dians_project$consumer.coverage" NAME="consumer Coverage Results" MODIFIED="1742730110655" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$consumer_real_time.coverage" NAME="consumer_real_time Coverage Results" MODIFIED="1742726052670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
-    <SUITE FILE_PATH="coverage/dians_project$producer.coverage" NAME="producer Coverage Results" MODIFIED="1742508648742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
+    <SUITE FILE_PATH="coverage/dians_project$producer.coverage" NAME="producer Coverage Results" MODIFIED="1742730107752" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$analysis.coverage" NAME="analysis Coverage Results" MODIFIED="1742069528033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/templates" />
     <SUITE FILE_PATH="coverage/dians_project$data_visualisation.coverage" NAME="data_visualisation Coverage Results" MODIFIED="1742116643192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dians_project$producer_real_time__1_.coverage" NAME="producer_real_time (1) Coverage Results" MODIFIED="1742726047292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$app.coverage" NAME="visuelization Coverage Results" MODIFIED="1742147280685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dians_project$symbols.coverage" NAME="symbols Coverage Results" MODIFIED="1741984560473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dians_project$visuelization.coverage" NAME="visuelization Coverage Results" MODIFIED="1742725621161" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visuelization" />
+    <SUITE FILE_PATH="coverage/dians_project$visuelization.coverage" NAME="visuelization Coverage Results" MODIFIED="1742744385026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visuelization" />
     <SUITE FILE_PATH="coverage/dians_project$producer_real_time.coverage" NAME="producer_real_time Coverage Results" MODIFIED="1742725974143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$scraping.coverage" NAME="scraping Coverage Results" MODIFIED="1742506741167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_scraping" />
     <SUITE FILE_PATH="coverage/dians_project$data_ingestion__1_.coverage" NAME="data_ingestion (1) Coverage Results" MODIFIED="1741949734611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

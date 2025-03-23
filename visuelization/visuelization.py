@@ -161,8 +161,11 @@ def plot_stock_data(symbol):
     if df is None or df.empty:
         raise ValueError("No data found for the given symbol.")
 
-    # Add 'days_since_start' column
+    # Ensure date is datetime and sort by date
     df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date')  # Sort chronologically!
+
+    # Add 'days_since_start' column
     df['days_since_start'] = (df['date'] - df['date'].min()).dt.days
 
     # Calculate all the metrics we need
@@ -179,6 +182,10 @@ def plot_stock_data(symbol):
     # Create a figure with 3 subplots arranged vertically
     fig, axs = plt.subplots(3, 1, figsize=(12, 15), gridspec_kw={'height_ratios': [3, 1, 1]}, facecolor='#111111')
 
+    # Configure date formatting for x-axis
+    import matplotlib.dates as mdates
+    date_format = mdates.DateFormatter('%Y-%m-%d')
+
     # First subplot: Price Chart with Linear Regression and Moving Average
     axs[0].plot(df['date'], df['close'], label="Close Price", color='#1E88E5', linewidth=2)
     axs[0].plot(df['date'], df['predicted_close'], label="Linear Regression", color='#FB8C00', linestyle='--')
@@ -189,6 +196,8 @@ def plot_stock_data(symbol):
     axs[0].grid(True, alpha=0.3)
     axs[0].tick_params(colors='white')
     axs[0].set_facecolor('#181818')
+    axs[0].xaxis.set_major_formatter(date_format)
+    plt.setp(axs[0].xaxis.get_majorticklabels(), rotation=45)
 
     # Second subplot: Daily Change (%)
     axs[1].bar(df['date'], df['daily_change'], color='#F44336', alpha=0.7)
@@ -198,6 +207,8 @@ def plot_stock_data(symbol):
     axs[1].grid(True, alpha=0.3)
     axs[1].tick_params(colors='white')
     axs[1].set_facecolor('#181818')
+    axs[1].xaxis.set_major_formatter(date_format)
+    plt.setp(axs[1].xaxis.get_majorticklabels(), rotation=45)
 
     # Third subplot: Volatility
     axs[2].plot(df['date'], df['volatility'], color='#9C27B0', linewidth=2)
@@ -208,8 +219,10 @@ def plot_stock_data(symbol):
     axs[2].grid(True, alpha=0.3)
     axs[2].tick_params(colors='white')
     axs[2].set_facecolor('#181818')
+    axs[2].xaxis.set_major_formatter(date_format)
+    plt.setp(axs[2].xaxis.get_majorticklabels(), rotation=45)
 
-    # Improve layout
+    # Improve layout with more space for date labels
     plt.tight_layout()
     plt.subplots_adjust(hspace=0.3)
 
@@ -227,8 +240,9 @@ def plot_historical_data(symbol, df):
     if df is None or df.empty:
         raise ValueError("No data found for the given symbol.")
 
-    # Ensure date is datetime
+    # Ensure date is datetime and sort chronologically
     df['date'] = pd.to_datetime(df['date'])
+    df = df.sort_values('date')  # Crucial for proper line charts!
 
     # Create figure with dark background
     fig, ax = plt.subplots(figsize=(10, 5), facecolor='#111111')
@@ -239,6 +253,17 @@ def plot_historical_data(symbol, df):
     ax.plot(df["date"], df["low"], label="Low Price", linestyle="solid", color="#F44336")
     ax.plot(df["date"], df["close"], label="Close Price", linestyle="solid", color="#1E88E5")
 
+    # Format date on x-axis
+    import matplotlib.dates as mdates
+    date_format = mdates.DateFormatter('%Y-%m-%d')
+    ax.xaxis.set_major_formatter(date_format)
+
+    # Rotate date labels for better readability
+    plt.setp(ax.xaxis.get_majorticklabels(), rotation=45)
+
+    # Adjust the frequency of date ticks to avoid overcrowding
+    ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+
     # Style the plot for dark theme
     ax.set_xlabel("Date", color="white")
     ax.set_ylabel("Price", color="white")
@@ -248,6 +273,9 @@ def plot_historical_data(symbol, df):
     ax.set_facecolor('#181818')
     ax.grid(alpha=0.3)
 
+    # Adjust layout to make room for date labels
+    plt.tight_layout()
+
     # Save to base64
     img = io.BytesIO()
     plt.savefig(img, format='png', facecolor='#111111')
@@ -256,7 +284,6 @@ def plot_historical_data(symbol, df):
     plt.close(fig)
 
     return img_b64
-
 
 # FLASK ROUTES
 
