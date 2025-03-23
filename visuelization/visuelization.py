@@ -264,7 +264,7 @@ def plot_historical_data(symbol, df):
 def index():
     """Home page route that displays limited number of symbols initially"""
     initial_symbols = fetch_limited_symbols(100)  # Load first 100 symbols
-    return render_template('index.html', symbols=initial_symbols)
+    return render_template('db_symbols.html', symbols=initial_symbols)
 
 
 @app.route('/api/symbols', methods=['GET'])
@@ -304,7 +304,7 @@ def stock(symbol):
     df = fetch_data_from_db(symbol)
 
     if df is None or df.empty:
-        return render_template('stock.html', error="No data found for the given symbol.", symbol=symbol)
+        return render_template('db_symbols_data_graph.html', error="No data found for the given symbol.", symbol=symbol)
 
     try:
         # Generate visualization and get MSE value
@@ -319,7 +319,7 @@ def stock(symbol):
         volatility = df['volatility'].iloc[-1] if 'volatility' in df else None
 
         # Render template with all data and visualization
-        return render_template('stock.html',
+        return render_template('db_symbols_data_graph.html',
                                img_b64=img_b64,
                                symbol=symbol,
                                mse=mse,
@@ -328,7 +328,7 @@ def stock(symbol):
                                volatility=volatility)
 
     except ValueError as e:
-        return render_template('stock.html', error=str(e), symbol=symbol)
+        return render_template('db_symbols_data_graph.html', error=str(e), symbol=symbol)
 
 
 @app.route('/historical_data/<symbol>', methods=['GET'])
