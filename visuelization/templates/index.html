@@ -9,180 +9,287 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
-    <!-- Animate.css for animations -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         /* Global Styles */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --border-color: #232323;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-blue: #1E88E5;
+            --hover-color: #1a1a1a;
+        }
+
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .navbar {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
         }
 
-        .container:hover {
-            transform: translateY(-10px);
-            box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        h1 {
-            text-align: center;
+        .navbar-brand {
             font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: var(--accent-blue);
+            font-size: 20px;
+        }
+
+        .main-container {
+            padding: 40px 20px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .app-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .app-subtitle {
+            font-size: 16px;
+            color: var(--text-secondary);
         }
 
         /* Search Box */
-        .search-box {
-            width: 100%;
-            margin-bottom: 20px;
-            padding: 15px;
-            border-radius: 12px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 16px;
-            font-weight: 500;
-            outline: none;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        .search-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 25px;
         }
 
-        .search-box::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+        .search-box {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.2s;
         }
 
         .search-box:focus {
-            border-color: #00ff88;
-            box-shadow: 0px 0px 12px rgba(0, 255, 136, 0.4);
+            outline: none;
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.3);
+        }
+
+        .search-box::placeholder {
+            color: var(--text-secondary);
         }
 
         /* Symbol List Container */
         .symbol-list-container {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
             max-height: 500px;
             overflow-y: auto;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin-top: 20px;
-        }
-
-        /* Symbol List Items */
-        .list-group-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #fff;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none; /* Remove underline from links */
-        }
-
-        .list-group-item:hover {
-            background: rgba(0, 255, 136, 0.2);
-            transform: translateX(10px);
-            box-shadow: 0px 4px 12px rgba(0, 255, 136, 0.3);
-        }
-
-        .list-group-item a {
-            text-decoration: none;
-            color: inherit;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .list-group-item i {
-            font-size: 18px;
-            color: #00ff88;
-        }
-
-        .list-group-item:hover i {
-            color: #fff;
         }
 
         /* Scrollbar Styling */
-        ::-webkit-scrollbar {
+        .symbol-list-container::-webkit-scrollbar {
             width: 8px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
+        .symbol-list-container::-webkit-scrollbar-track {
+            background: var(--card-bg);
         }
 
-        ::-webkit-scrollbar-thumb {
-            background: #00ff88;
-            border-radius: 10px;
+        .symbol-list-container::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
         }
 
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00cc66;
+        .symbol-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
         }
 
-        /* Animations */
-        .animate-pop {
-            animation: pop 0.5s ease;
+        /* Symbol List Items */
+        .list-group {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        @keyframes pop {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
+        .list-group-item {
+            padding: 0;
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            transition: background-color 0.2s;
+        }
+
+        .list-group-item:last-child {
+            border-bottom: none;
+        }
+
+        .list-group-item a {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .list-group-item a:hover {
+            background-color: var(--hover-color);
+        }
+
+        .symbol-logo {
+            width: 80px;
+            height: 40px;
+            border-radius: 6px;
+            background-color: var(--accent-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+
+        .symbol-info {
+            flex: 1;
+        }
+
+        .symbol-view {
+            display: flex;
+            align-items: center;
+            color: var(--accent-blue);
+            font-size: 14px;
+        }
+
+        .symbol-view i {
+            margin-left: 6px;
+        }
+
+        /* Load More Button */
+        .load-more {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .load-more button {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .load-more button:hover {
+            background-color: #1565c0;
+        }
+
+        /* Status indicator */
+        .refresh-status {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            padding: 10px;
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .app-title {
+                font-size: 24px;
+            }
+
+            .search-container {
+                padding: 15px;
+            }
+
+            .symbol-logo {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-chart-line"></i> Stock Analysis
+            </a>
+        </div>
+    </nav>
 
-    <div class="container animate__animated animate__fadeIn">
-        <h1>📈 Stock Market Explorer</h1>
+    <div class="main-container animate__animated animate__fadeIn">
+        <div class="app-header text-center">
+            <h1 class="app-title">Stock Market Explorer</h1>
+            <p class="app-subtitle">Search and analyze stock market data</p>
+        </div>
 
-        <!-- Search Box -->
-        <input type="text" id="searchInput" class="search-box form-control" placeholder="🔍 Search for a stock symbol...">
+        <!-- Search Container -->
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-box" placeholder="Search for a stock symbol...">
+        </div>
 
         <!-- Scrollable List -->
         <div class="symbol-list-container">
             <ul class="list-group" id="symbolList">
                 {% for symbol in symbols %}
-                    <li class="list-group-item animate-pop">
-                        <a href="{{ url_for('stock', symbol=symbol) }}" class="d-block w-100">
-                            <i class="fas fa-chart-line"></i>
-                            {{ symbol }}
-                            <span class="badge bg-success ms-auto">View</span>
+                    <li class="list-group-item">
+                        <a href="{{ url_for('stock', symbol=symbol) }}">
+                            <div class="symbol-info">
+                                <span class="symbol-logo">{{ symbol }}</span>
+                            </div>
+                            <div class="symbol-view">
+                                View <i class="fas fa-chevron-right"></i>
+                            </div>
                         </a>
                     </li>
                 {% endfor %}
             </ul>
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more">
+            <button id="loadMoreBtn">Load More</button>
+        </div>
+
+        <!-- Status display -->
+        <div class="refresh-status" id="refreshStatus">
+            Loaded <span id="loadedCount">{{ symbols|length }}</span> symbols
+            <span id="refreshTimer">(Refreshing in <span id="countdown">60</span> seconds)</span>
         </div>
     </div>
 
@@ -191,27 +298,170 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        $(document).ready(function(){
-            // Search functionality
-            $("#searchInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $(".list-group-item").each(function() {
-                    var text = $(this).text().toLowerCase();
-                    $(this).toggle(text.includes(value));
-                });
+    $(document).ready(function () {
+        let offset = {{ symbols|length }};
+        const limit = 100;
+        let autoLoadInterval;
+        let isLoading = false;
+        let totalCount = 0;
+        let countdownInterval;
+
+        // Search functionality
+        $("#searchInput").on("keyup", function() {
+            const searchValue = $(this).val().toLowerCase().trim();
+
+            // Loop through all list items and hide those that don't match the search query
+            $("#symbolList li").each(function() {
+                const symbolText = $(this).find(".symbol-logo").text().toLowerCase();
+
+                if (symbolText.indexOf(searchValue) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
             });
 
-            // Add hover animations
-            $(".list-group-item").hover(
-                function() {
-                    $(this).addClass("animate__animated animate__pulse");
-                },
-                function() {
-                    $(this).removeClass("animate__animated animate__pulse");
+            // Show a message if no results found
+            const visibleItems = $("#symbolList li:visible").length;
+            if (visibleItems === 0 && searchValue !== "") {
+                // Check if the "no results" message already exists
+                if ($("#noResults").length === 0) {
+                    $("#symbolList").append(`
+                        <li class="list-group-item text-center" id="noResults">
+                            <div class="p-3">
+                                <i class="fas fa-search me-2"></i>
+                                No results found for "${searchValue}"
+                            </div>
+                        </li>
+                    `);
+                } else {
+                    // Update the existing message
+                    $("#noResults div").html(`
+                        <i class="fas fa-search me-2"></i>
+                        No results found for "${searchValue}"
+                    `);
                 }
-            );
+            } else {
+                // Remove the "no results" message if there are visible items or search is empty
+                $("#noResults").remove();
+            }
         });
-    </script>
 
+        // Function to start the countdown
+        function startCountdown(seconds) {
+            let countdown = seconds;
+            $("#countdown").text(countdown);
+
+            clearInterval(countdownInterval); // Clear any existing interval
+            countdownInterval = setInterval(() => {
+                countdown--;
+                $("#countdown").text(countdown);
+
+                if (countdown <= 0) {
+                    clearInterval(countdownInterval);
+                }
+            }, 1000);
+        }
+
+        // Function to load more symbols
+        function loadMoreSymbols() {
+            if (isLoading) return; // Prevent multiple simultaneous requests
+
+            isLoading = true;
+            $("#refreshStatus").html(`Loading more symbols...`);
+
+            $.ajax({
+                url: "/api/symbols",
+                type: "GET",
+                data: {
+                    offset: offset,
+                    limit: limit
+                },
+                success: function (response) {
+                    if (response.symbols && response.symbols.length > 0) {
+                        // Add new symbols to the list
+                        response.symbols.forEach(symbol => {
+                            const newItem = `
+                                <li class="list-group-item">
+                                    <a href="/stock/${symbol}">
+                                        <div class="symbol-info">
+                                            <span class="symbol-logo">${symbol}</span>
+                                        </div>
+                                        <div class="symbol-view">
+                                            View <i class="fas fa-chevron-right"></i>
+                                        </div>
+                                    </a>
+                                </li>
+                            `;
+                            $("#symbolList").append(newItem);
+                        });
+
+                        // Update offset for next loading
+                        offset += response.symbols.length;
+                        totalCount = response.total_count;
+                        $("#loadedCount").text(offset); // Update the loaded count
+                        $("#refreshStatus").html(`
+                            Loaded <span id="loadedCount">${offset}</span> of ${totalCount} symbols
+                            <span id="refreshTimer">(Refreshing in <span id="countdown">60</span> seconds)</span>
+                        `);
+
+                        // Check if we've loaded all symbols
+                        if (offset >= totalCount) {
+                            clearInterval(autoLoadInterval);
+                            $("#loadMoreBtn").hide();
+                            $("#refreshStatus").html(`All ${totalCount} symbols loaded`);
+                        } else {
+                            // Restart the countdown
+                            startCountdown(60);
+                        }
+
+                        // Apply any current search filter to the newly loaded items
+                        const currentSearch = $("#searchInput").val().toLowerCase().trim();
+                        if (currentSearch !== "") {
+                            $("#symbolList li").each(function() {
+                                const symbolText = $(this).find(".symbol-logo").text().toLowerCase();
+
+                                if (symbolText.indexOf(currentSearch) > -1) {
+                                    $(this).show();
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        }
+                    } else {
+                        // No more symbols to load
+                        clearInterval(autoLoadInterval);
+                        $("#loadMoreBtn").hide();
+                        $("#refreshStatus").html(`All ${totalCount} symbols loaded`);
+                    }
+
+                    isLoading = false;
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error loading more symbols:", error);
+                    $("#refreshStatus").html(`<span style="color: #f44336;">Error loading symbols. <a href="#" onclick="location.reload()">Refresh</a></span>`);
+                    isLoading = false;
+                }
+            });
+        }
+
+        // Start auto-refresh every minute (60000 milliseconds)
+        autoLoadInterval = setInterval(function() {
+            if (offset < totalCount) {
+                loadMoreSymbols();
+            } else {
+                clearInterval(autoLoadInterval);
+            }
+        }, 60000);
+
+        // Start the initial countdown
+        startCountdown(60);
+
+        // Keep the manual button for immediate loading if needed
+        $("#loadMoreBtn").click(function() {
+            loadMoreSymbols();
+        });
+    });
+</script>
 </body>
 </html>

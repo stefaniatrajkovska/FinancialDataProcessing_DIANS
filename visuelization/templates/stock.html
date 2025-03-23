@@ -3,149 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stock Data - {{ symbol }}</title>
+    <title>{{ symbol }} - Stock Analysis</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-
-    <!-- Animate.css for animations -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
         /* Global Styles */
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #111111;
+            --border-color: #232323;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent-green: #00C805;
+            --accent-red: #FF3B30;
+            --accent-blue: #1E88E5;
+            --hover-color: #1a1a1a;
+        }
+
         body {
-            font-family: 'Space Grotesk', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
             margin: 0;
-            padding: 40px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
+            padding: 0;
+            line-height: 1.6;
         }
 
-        .container {
-            max-width: 1000px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .navbar {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
         }
 
-        .container:hover {
-            transform: translateY(-10px);
-            box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        h1 {
-            text-align: center;
+        .navbar-brand {
             font-weight: 700;
-            font-size: 2.5rem;
-            margin-bottom: 25px;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: var(--accent-blue);
+            font-size: 20px;
         }
 
-        /* Chart Container */
-        .chart-container {
+        .stock-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stock-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-symbol {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .stock-company {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .chart-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .chart-body {
+            padding: 0;
+            background-color: var(--card-bg);
+        }
+
+        .chart-body img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background-color: var(--hover-color);
+        }
+
+        .metric-name {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-name i {
+            margin-right: 6px;
+            width: 16px;
             text-align: center;
-            margin: 20px 0;
         }
 
-        img {
-            width: 90%;
-            max-width: 800px;
-            border-radius: 12px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
         }
 
-        img:hover {
-            transform: scale(1.02);
-            box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.4);
+        .positive {
+            color: var(--accent-green);
         }
 
-        /* Back Link */
-        .back-link {
-            text-align: center;
+        .negative {
+            color: var(--accent-red);
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 10px;
             margin-top: 20px;
+            margin-bottom: 40px;
         }
 
-        .back-link a {
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
             text-decoration: none;
-            color: #00ff88;
-            font-weight: 500;
-            font-size: 18px;
-            transition: color 0.3s ease;
         }
 
-        .back-link a:hover {
-            color: #fff;
-            text-shadow: 0px 0px 8px rgba(0, 255, 136, 0.6);
+        .btn-action:hover {
+            background-color: var(--hover-color);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
         }
 
-        /* Error Message */
-        .error-message {
+        .btn-action i {
+            margin-right: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #1976D2;
+            color: white;
+        }
+
+        /* Error State */
+        .error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
             text-align: center;
-            color: #ff6b6b;
-            font-weight: 500;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            color: var(--accent-red);
+            margin-bottom: 20px;
+        }
+
+        .error-message {
             font-size: 18px;
-            margin-top: 20px;
+            color: var(--text-primary);
+            margin-bottom: 30px;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stock-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions-bar {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-
-    <div class="container animate__animated animate__fadeIn">
-        <h1>📊 Stock Data for {{ symbol }}</h1>
-
-         <!-- Historical Data Button -->
-        <div class="text-center mt-4">
-            <a href="/historical_data/{{ symbol }}" class="btn btn-primary">Historical Data</a>
-        </div>
-
-        <div class="chart-container">
-            {% if img_b64 %}
-                <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Chart" class="animate__animated animate__fadeIn">
-                <p class="mse-text animate__animated animate__fadeIn">
-                    <strong>📉 Mean Squared Error (MSE):</strong> {{ mse|round(2) }}
-                </p>
-                <p class="ma-text animate__animated animate__fadeIn">
-                    <strong>📈 Moving Average (3 Days):</strong> {{ moving_average|round(2) }}
-                </p>
-                <p class="daily-change-text animate__animated animate__fadeIn">
-                    <strong>💹 Daily Change (%):</strong> {{ daily_change|round(2) }}
-                </p>
-                <p class="volatility-text animate__animated animate__fadeIn">
-                    <strong>⚡ Volatility (3 Days):</strong> {{ volatility|round(2) }}
-                </p>
-            {% else %}
-                <p class="error-message animate__animated animate__shakeX">{{ error }}</p>
-            {% endif %}
-        </div>
-
-        <!-- Back Link -->
-        <div class="back-link">
-            <a href="{{ url_for('index') }}">
-                <i class="fas fa-arrow-left"></i> Back to Symbols List
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <i class="fas fa-chart-line"></i> Stock Analysis
             </a>
         </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+        {% if error %}
+            <!-- Error State -->
+            <div class="error-container">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-circle"></i>
+                </div>
+                <div class="error-message">
+                    {{ error }}
+                </div>
+                <a href="{{ url_for('index') }}" class="btn-action">
+                    <i class="fas fa-arrow-left"></i> Back to Symbols List
+                </a>
+            </div>
+        {% else %}
+            <!-- Stock Header -->
+            <div class="stock-header">
+                <div class="stock-title">
+                    <h1 class="stock-symbol">{{ symbol }}</h1>
+                    <p class="stock-company">Stock Market Analysis</p>
+                </div>
+
+                <div>
+                    <span class="badge bg-secondary">MSE: {{ mse|round(2) }}</span>
+                </div>
+            </div>
+
+            <!-- Main Chart Card -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3 class="chart-title">Price Analysis</h3>
+                </div>
+                <div class="chart-body">
+                    <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Chart for {{ symbol }}">
+                </div>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="metrics-grid">
+                <!-- Mean Squared Error -->
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-calculator"></i> Mean Squared Error
+                    </div>
+                    <div class="metric-value">{{ mse|round(2) }}</div>
+                </div>
+
+                <!-- Moving Average -->
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-chart-line"></i> Moving Average (3 Days)
+                    </div>
+                    <div class="metric-value">${{ moving_average|round(2) }}</div>
+                </div>
+
+                <!-- Daily Change -->
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-percent"></i> Daily Change
+                    </div>
+                    <div class="metric-value {% if daily_change > 0 %}positive{% else %}negative{% endif %}">
+                        {% if daily_change > 0 %}+{% endif %}{{ daily_change|round(2) }}%
+                    </div>
+                </div>
+
+                <!-- Volatility -->
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-bolt"></i> Volatility (3 Days)
+                    </div>
+                    <div class="metric-value">{{ volatility|round(2) }}</div>
+                </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="actions-bar">
+                <a href="/historical_data/{{ symbol }}" class="btn-action btn-primary">
+                    <i class="fas fa-history"></i> Historical Data
+                </a>
+
+                <a href="{{ url_for('index') }}" class="btn-action">
+                    <i class="fas fa-arrow-left"></i> Back to Symbols
+                </a>
+            </div>
+        {% endif %}
     </div>
 
-    <!-- Bootstrap JS & jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>
