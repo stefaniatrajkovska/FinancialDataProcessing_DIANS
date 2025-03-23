@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e759dfb9-3b29-48cf-826d-d97932602b06" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/historical_data.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/historical_data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/stock.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/stock.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/visuelization/templates/symbol_graph.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/symbol_graph.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuelization/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/db_symbols.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuelization/templates/stock.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/db_symbols_data_graph.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/visuelization/visuelization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/visuelization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -312,7 +309,7 @@
       <workItem from="1742043707830" duration="562000" />
       <workItem from="1742058797092" duration="3606000" />
       <workItem from="1742062528604" duration="426000" />
-      <workItem from="1742063107735" duration="88739000" />
+      <workItem from="1742063107735" duration="89136000" />
     </task>
     <servers />
   </component>

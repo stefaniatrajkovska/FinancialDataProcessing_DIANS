@@ -337,12 +337,12 @@ def historical_data(symbol):
     df = fetch_data_from_db(symbol)
 
     if df is None or df.empty:
-        return render_template('historical_data.html', error="No data found for the given symbol.", symbol=symbol)
+        return render_template('db_symbols_historical_data.html', error="No data found for the given symbol.", symbol=symbol)
 
     # Generate dark-themed chart for historical prices
     img_b64 = plot_historical_data(symbol, df)
 
-    return render_template('historical_data.html', img_b64=img_b64, symbol=symbol)
+    return render_template('db_symbols_historical_data.html', img_b64=img_b64, symbol=symbol)
 
 
 # Run the Flask application in debug mode
