@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e759dfb9-3b29-48cf-826d-d97932602b06" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_processing/consumer.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/consumer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_processing/producer.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_processing/producer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_scraping/scraping_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_scraping/scraping_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuelization/templates/db_symbols_data_graph.html" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/templates/db_symbols_data_graph.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visuelization/visuelization.py" beforeDir="false" afterPath="$PROJECT_DIR$/visuelization/visuelization.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +19,7 @@
       <list>
         <option value="Python Script" />
         <option value="HTML File" />
+        <option value="Dockerfile" />
       </list>
     </option>
   </component>
@@ -311,7 +311,7 @@
       <workItem from="1742043707830" duration="562000" />
       <workItem from="1742058797092" duration="3606000" />
       <workItem from="1742062528604" duration="426000" />
-      <workItem from="1742063107735" duration="98975000" />
+      <workItem from="1742063107735" duration="109839000" />
     </task>
     <servers />
   </component>
@@ -335,7 +335,7 @@
     <SUITE FILE_PATH="coverage/dians_project$producer_real_time__1_.coverage" NAME="producer_real_time (1) Coverage Results" MODIFIED="1742726047292" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$app.coverage" NAME="visuelization Coverage Results" MODIFIED="1742147280685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/dians_project$symbols.coverage" NAME="symbols Coverage Results" MODIFIED="1741984560473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/dians_project$visuelization.coverage" NAME="visuelization Coverage Results" MODIFIED="1742744385026" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visuelization" />
+    <SUITE FILE_PATH="coverage/dians_project$visuelization.coverage" NAME="visuelization Coverage Results" MODIFIED="1742851494325" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/visuelization" />
     <SUITE FILE_PATH="coverage/dians_project$producer_real_time.coverage" NAME="producer_real_time Coverage Results" MODIFIED="1742725974143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_processing" />
     <SUITE FILE_PATH="coverage/dians_project$scraping.coverage" NAME="scraping Coverage Results" MODIFIED="1742506741167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_scraping" />
     <SUITE FILE_PATH="coverage/dians_project$data_ingestion__1_.coverage" NAME="data_ingestion (1) Coverage Results" MODIFIED="1741949734611" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

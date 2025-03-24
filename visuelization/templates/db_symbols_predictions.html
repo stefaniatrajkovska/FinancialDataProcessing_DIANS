@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ symbol }} - Stock Analysis</title>
+    <title>{{ symbol }} - Stock Price Predictions</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -273,69 +273,73 @@
             <!-- Stock Header -->
             <div class="stock-header">
                 <div class="stock-title">
-                    <h1 class="stock-symbol">{{ symbol }}</h1>
-                    <p class="stock-company">Stock Market Analysis</p>
-                </div>
-
-                <div>
-                    <span class="badge bg-secondary">MSE: {{ mse|round(2) }}</span>
+                    <h1 class="stock-symbol">{{ symbol }} Predictions</h1>
+                    <p class="stock-company">30-Day Price Forecast</p>
                 </div>
             </div>
 
             <!-- Main Chart Card -->
             <div class="chart-card">
                 <div class="chart-header">
-                    <h3 class="chart-title">Price Analysis</h3>
+                    <h3 class="chart-title">Price Prediction Models</h3>
                 </div>
                 <div class="chart-body">
-                    <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Chart for {{ symbol }}">
+                    <img src="data:image/png;base64,{{ img_b64 }}" alt="Stock Price Predictions for {{ symbol }}">
                 </div>
             </div>
 
             <!-- Metrics Grid -->
             <div class="metrics-grid">
-                <!-- Mean Squared Error -->
+                <!-- Linear Regression Metrics -->
                 <div class="metric-card">
                     <div class="metric-name">
-                        <i class="fas fa-calculator"></i> Mean Squared Error
+                        <i class="fas fa-chart-line"></i> Linear Regression MSE
                     </div>
-                    <div class="metric-value">{{ mse|round(2) }}</div>
+                    <div class="metric-value">{{ linear_mse|round(4) }}</div>
                 </div>
 
-                <!-- Moving Average -->
                 <div class="metric-card">
                     <div class="metric-name">
-                        <i class="fas fa-chart-line"></i> Moving Average (3 Days)
+                        <i class="fas fa-percent"></i> Linear Regression R²
                     </div>
-                    <div class="metric-value">${{ moving_average|round(2) }}</div>
+                    <div class="metric-value">{{ linear_r2|round(4) }}</div>
                 </div>
 
-                <!-- Daily Change -->
+                <!-- Polynomial Regression Metrics -->
                 <div class="metric-card">
                     <div class="metric-name">
-                        <i class="fas fa-percent"></i> Daily Change
+                        <i class="fas fa-chart-area"></i> Polynomial Regression MSE
                     </div>
-                    <div class="metric-value {% if daily_change > 0 %}positive{% else %}negative{% endif %}">
-                        {% if daily_change > 0 %}+{% endif %}{{ daily_change|round(2) }}%
-                    </div>
+                    <div class="metric-value">{{ poly_mse|round(4) }}</div>
                 </div>
 
-                <!-- Volatility -->
                 <div class="metric-card">
                     <div class="metric-name">
-                        <i class="fas fa-bolt"></i> Volatility (3 Days)
+                        <i class="fas fa-percent"></i> Polynomial Regression R²
                     </div>
-                    <div class="metric-value">{{ volatility|round(2) }}</div>
+                    <div class="metric-value">{{ poly_r2|round(4) }}</div>
+                </div>
+
+                <!-- Random Forest Metrics -->
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-tree"></i> Random Forest MSE
+                    </div>
+                    <div class="metric-value">{{ rf_mse|round(4) }}</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-name">
+                        <i class="fas fa-percent"></i> Random Forest R²
+                    </div>
+                    <div class="metric-value">{{ rf_r2|round(4) }}</div>
                 </div>
             </div>
 
             <!-- Actions Bar -->
             <div class="actions-bar">
-                <a href="/historical_data/{{ symbol }}" class="btn-action btn-primary">
-                    <i class="fas fa-history"></i> Historical Data
-                </a>
-                <a href="/predictions/{{ symbol }}" class="btn-action btn-primary">
-                    <i class="fas fa-history"></i> View Predictions
+                <a href="/stock/{{ symbol }}" class="btn-action btn-primary">
+                    <i class="fas fa-chart-line"></i> Back to Analysis
                 </a>
 
                 <a href="{{ url_for('index') }}" class="btn-action">
@@ -349,5 +353,3 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-

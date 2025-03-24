@@ -1,11 +1,16 @@
 import psycopg2
 import pandas as pd
+import numpy as np
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.pipeline import make_pipeline
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
 from flask import Flask, render_template, request, jsonify
 import matplotlib.pyplot as plt
 import io
 import base64
+from datetime import timedelta
 
 # PostgreSQL configuration settings
 DB_HOST = "localhost"
@@ -19,7 +24,6 @@ app = Flask(__name__, template_folder='../visuelization/templates')
 
 # Configure matplotlib for dark theme
 plt.style.use('dark_background')
-
 
 def fetch_limited_symbols(limit=100):
     """Function that retrieves a limited number of stock symbols from the database."""
@@ -45,7 +49,6 @@ def fetch_limited_symbols(limit=100):
         print(f"Error fetching limited symbols: {e}")
         return []
 
-
 def fetch_symbols_batch(offset, limit=100):
     """Function that retrieves a batch of symbols with pagination."""
     try:
@@ -66,10 +69,10 @@ def fetch_symbols_batch(offset, limit=100):
 
         # Query to get distinct symbols with pagination
         cursor.execute("""
-            SELECT DISTINCT symbol 
-            FROM financial_data 
-            ORDER BY symbol 
-            OFFSET %s 
+            SELECT DISTINCT symbol
+            FROM financial_data
+            ORDER BY symbol
+            OFFSET %s
             LIMIT %s;
         """, (offset, limit))
 
@@ -84,6 +87,7 @@ def fetch_symbols_batch(offset, limit=100):
         print(f"Error fetching symbol batch: {e}")
         # Return empty list and 0 count in case of error
         return [], 0
+
 def fetch_data_from_db(symbol):
     """Function that retrieves data for a given symbol from PostgreSQL."""
     try:
@@ -111,7 +115,6 @@ def fetch_data_from_db(symbol):
     except Exception as e:
         print(f"Error fetching data: {e}")
         return None
-
 
 def analyze_symbol(symbol, df):
     """Performs machine learning for a given symbol and generates predictions and additional analyses."""
@@ -154,6 +157,87 @@ def analyze_symbol(symbol, df):
 
     return df, mse
 
+def predict_stock_prices(symbol, future_days=30):
+    """Function for predicting prices with multiple models"""
+    try:
+        # Connect to database
+        connection = psycopg2.connect(
+            host=DB_HOST,
+            port=DB_PORT,
+            database=DB_NAME,
+            user=DB_USER,
+            password=DB_PASSWORD
+        )
+
+        query = f"""
+        SELECT symbol, date, close
+        FROM financial_data
+        WHERE symbol = '{symbol}'
+        ORDER BY date;
+        """
+
+        df = pd.read_sql(query, connection)
+        connection.close()
+
+        df['date'] = pd.to_datetime(df['date'])
+        df = df.sort_values('date')
+        df['days_since_start'] = (df['date'] - df['date'].min()).dt.days
+
+        # Prepare data for prediction
+        X = df['days_since_start'].values.reshape(-1, 1)
+        y = df['close'].values
+
+        # Linear Regression (straight-line relationship between time and stock price)
+        linear_model = LinearRegression()
+        linear_model.fit(X, y)
+
+        # Polynomial Regression (more complex model that can capture non-linear trends)
+        poly_model = make_pipeline(PolynomialFeatures(degree=2), LinearRegression())
+        poly_model.fit(X, y)
+
+        # Random Forest Regression (an ensemble model that can capture more complex patterns)
+        rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+        rf_model.fit(X, y)
+
+        # Predict for future days
+        last_day = df['days_since_start'].max()
+        future_X = np.array(range(last_day + 1, last_day + future_days + 1)).reshape(-1, 1)
+        future_dates = [df['date'].max() + timedelta(days=x+1) for x in range(future_days)]
+
+        linear_predictions = linear_model.predict(future_X)
+        poly_predictions = poly_model.predict(future_X)
+        rf_predictions = rf_model.predict(future_X)
+
+        # Calculate errors
+        # MSE - lower values indicate better model performance
+        linear_mse = mean_squared_error(y, linear_model.predict(X))
+        poly_mse = mean_squared_error(y, poly_model.predict(X))
+        rf_mse = mean_squared_error(y, rf_model.predict(X))
+
+        # R-Squared - ranges from 0 to 1, higher values indicate better model fit
+        linear_r2 = r2_score(y, linear_model.predict(X))
+        poly_r2 = r2_score(y, poly_model.predict(X))
+        rf_r2 = r2_score(y, rf_model.predict(X))
+
+        return {
+            'symbol': symbol,
+            'historical_dates': df['date'],
+            'historical_prices': df['close'],
+            'future_dates': future_dates,
+            'linear_predictions': linear_predictions,
+            'poly_predictions': poly_predictions,
+            'rf_predictions': rf_predictions,
+            'linear_mse': linear_mse,
+            'poly_mse': poly_mse,
+            'rf_mse': rf_mse,
+            'linear_r2': linear_r2,
+            'poly_r2': poly_r2,
+            'rf_r2': rf_r2
+        }
+
+    except Exception as e:
+        print(f"Error predicting stock prices: {e}")
+        return None
 
 def plot_stock_data(symbol):
     """Creates multiple visualizations for stock data including predictions and indicators"""
@@ -187,6 +271,7 @@ def plot_stock_data(symbol):
     date_format = mdates.DateFormatter('%Y-%m-%d')
 
     # First subplot: Price Chart with Linear Regression and Moving Average
+    # The linear regression line represents the overall trend of stock prices, showing the average rate od price change over the observed time period
     axs[0].plot(df['date'], df['close'], label="Close Price", color='#1E88E5', linewidth=2)
     axs[0].plot(df['date'], df['predicted_close'], label="Linear Regression", color='#FB8C00', linestyle='--')
     axs[0].plot(df['date'], df['moving_average'], label="3-Day Moving Average", color='#4CAF50')
@@ -234,6 +319,38 @@ def plot_stock_data(symbol):
     plt.close(fig)
     return img_b64, mse
 
+def plot_predictions(prediction_data):
+    """Create visualization for stock price predictions"""
+    plt.figure(figsize=(15, 8), facecolor='#111111')
+
+    # Historical data
+    plt.plot(prediction_data['historical_dates'], prediction_data['historical_prices'],
+             label='Historical Prices', color='#1E88E5', linewidth=2)
+
+    # Predictions from different models
+    plt.plot(prediction_data['future_dates'], prediction_data['linear_predictions'],
+             label='Linear Regression', color='#FFC107', linestyle='--')
+    plt.plot(prediction_data['future_dates'], prediction_data['poly_predictions'],
+             label='Polynomial Regression', color='#4CAF50', linestyle=':')
+    plt.plot(prediction_data['future_dates'], prediction_data['rf_predictions'],
+             label='Random Forest', color='#FF5722', linestyle='-.')
+
+    plt.title(f"Stock Price Predictions for {prediction_data['symbol']}", color='white')
+    plt.xlabel('Date', color='white')
+    plt.ylabel('Price', color='white')
+    plt.legend()
+    plt.grid(alpha=0.3)
+    plt.tick_params(colors='white')
+    plt.xticks(rotation=45)
+
+    # Save plot to base64
+    img = io.BytesIO()
+    plt.savefig(img, format='png', facecolor='#111111')
+    img.seek(0)
+    img_b64 = base64.b64encode(img.getvalue()).decode('utf8')
+    plt.close()
+
+    return img_b64
 
 def plot_historical_data(symbol, df):
     """Creates a historical price chart with dark theme"""
@@ -293,7 +410,6 @@ def index():
     initial_symbols = fetch_limited_symbols(100)  # Load first 100 symbols
     return render_template('db_symbols.html', symbols=initial_symbols)
 
-
 @app.route('/api/symbols', methods=['GET'])
 def api_symbols():
     """API endpoint to fetch symbols in batches with pagination"""
@@ -323,7 +439,6 @@ def api_symbols():
         import traceback
         traceback.print_exc()
         return jsonify({'error': error_msg}), 500
-
 
 @app.route('/stock/<symbol>', methods=['GET'])
 def stock(symbol):
@@ -357,6 +472,27 @@ def stock(symbol):
     except ValueError as e:
         return render_template('db_symbols_data_graph.html', error=str(e), symbol=symbol)
 
+@app.route('/predictions/<symbol>', methods=['GET'])
+def predictions(symbol):
+    """Route to display stock price predictions"""
+    prediction_data = predict_stock_prices(symbol)
+
+    if prediction_data is None:
+        return render_template('db_symbols_predictions.html',
+                               error="No predictions could be generated.",
+                               symbol=symbol)
+
+    img_b64 = plot_predictions(prediction_data)
+
+    return render_template('db_symbols_predictions.html',
+                           symbol=symbol,
+                           img_b64=img_b64,
+                           linear_mse=prediction_data['linear_mse'],
+                           poly_mse=prediction_data['poly_mse'],
+                           rf_mse=prediction_data['rf_mse'],
+                           linear_r2=prediction_data['linear_r2'],
+                           poly_r2=prediction_data['poly_r2'],
+                           rf_r2=prediction_data['rf_r2'])
 
 @app.route('/historical_data/<symbol>', methods=['GET'])
 def historical_data(symbol):
@@ -370,7 +506,6 @@ def historical_data(symbol):
     img_b64 = plot_historical_data(symbol, df)
 
     return render_template('db_symbols_historical_data.html', img_b64=img_b64, symbol=symbol)
-
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
