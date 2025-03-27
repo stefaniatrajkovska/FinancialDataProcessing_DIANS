@@ -57,6 +57,26 @@ services:
     volumes:
       - ./data_scraping:/app/data_scraping
 
+
+  scraping_symbols:
+    build:
+      context: ./data_scraping
+    command: python scraping_symbols.py
+    volumes:
+      - ./data_scraping:/app
+    restart: "no"
+
+  scraping_data:
+    build:
+      context: ./data_scraping
+    command: python scraping_data.py
+    volumes:
+      - ./data_scraping:/app
+    restart: "no"
+    depends_on:
+      - scraping_symbols
+
+
   visualization:
     build:
       context: ./visuelization
