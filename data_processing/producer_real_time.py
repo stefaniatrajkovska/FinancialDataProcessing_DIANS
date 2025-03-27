@@ -10,9 +10,9 @@ from datetime import datetime, timedelta
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 # Kafka Configuration
-KAFKA_BROKER = "localhost:9092"
+KAFKA_BROKER = "kafka:9092"
 KAFKA_TOPIC = "financial_data"
-CSV_FILE_PATH = "../data_scraping/nasdaq_symbols.csv"
+CSV_FILE_PATH = "/app/data_scraping/nasdaq_symbols.csv"
 
 
 def delivery_report(err, msg):

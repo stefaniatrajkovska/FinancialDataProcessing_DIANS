@@ -1,0 +1,136 @@
+version: '3.8'
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+    restart: unless-stopped
+
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+    depends_on:
+      - zookeeper
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: financial_data_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: financialdataproject
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  producer:
+    build:
+      context: ./data_processing
+    command: python producer.py
+    depends_on:
+      - kafka
+    restart: unless-stopped
+    volumes:
+      - ./data_scraping:/app/data_scraping
+
+  consumer:
+    build:
+      context: ./data_processing
+    command: python consumer.py
+    depends_on:
+      - producer
+      - postgres
+    restart: unless-stopped
+    environment:
+      KAFKA_BROKER: kafka:9092
+    volumes:
+      - ./data_scraping:/app/data_scraping
+
+  visualization:
+    build:
+      context: ./visuelization
+    command: python visuelization.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - consumer
+      - postgres
+    restart: unless-stopped
+    volumes:
+      - ./visuelization/templates:/app/templates
+
+  producer_real_time:
+    build:
+      context: ./data_processing
+    command: python producer_real_time.py
+    depends_on:
+      - kafka
+    restart: unless-stopped
+    volumes:
+      - ./data_scraping:/app/data_scraping
+
+  consumer_real_time:
+    build:
+      context: ./data_processing
+    command: python consumer_real_time.py
+    depends_on:
+      - producer_real_time
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./data_scraping:/app/data_scraping
+      - ./visuelization/templates:/app/templates
+
+  spark-master:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=0.0.0.0
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - "7077:7077"
+      - "8080:8080"
+    restart: unless-stopped
+
+  spark-worker:
+    image: bitnami/spark:latest
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_CORES=2
+      - SPARK_WORKER_MEMORY=1g
+    depends_on:
+      - spark-master
+    restart: unless-stopped
+
+  spark-job:
+    build:
+      context: ./data_processing
+    command: spark-submit --master spark://spark-master:7077 /app/consumer.py
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+    volumes:
+      - ./data_processing:/app
+    depends_on:
+      - spark-master
+      - kafka
+      - postgres
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -1,0 +1,6 @@
+pandas
+confluent-kafka
+psycopg2-binary
+yfinance==0.2.55
+numpy>=1.16.5
+requests

@@ -1,0 +1,8 @@
+pandas
+flask
+scikit-learn
+matplotlib
+plotly
+yfinance==0.2.55
+numpy>=1.16.5
+psycopg2-binary

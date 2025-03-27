@@ -13,14 +13,14 @@ import base64
 from datetime import timedelta
 
 # PostgreSQL configuration settings
-DB_HOST = "localhost"
+DB_HOST = "postgres"
 DB_PORT = "5432"
 DB_NAME = "financial_data_db"
 DB_USER = "postgres"
 DB_PASSWORD = "financialdataproject"
 
 # Initialize Flask application
-app = Flask(__name__, template_folder='../visuelization/templates')
+app = Flask(__name__, template_folder='/app/templates')
 
 # Configure matplotlib for dark theme
 plt.style.use('dark_background')
@@ -509,4 +509,4 @@ def historical_data(symbol):
 
 # Run the Flask application in debug mode
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0',port=5000)

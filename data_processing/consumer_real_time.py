@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # Flask App
-app = Flask(__name__, template_folder='../visuelization/templates')
+app = Flask(__name__, template_folder='/app/templates')
 
 # Global DataFrame to store data
 data_df = pd.DataFrame(columns=['Symbol', 'Date', 'Open', 'High', 'Low', 'Close', 'Volume'])
@@ -54,7 +54,7 @@ def get_trading_day():
 def create_kafka_consumer():
     """Create and return a Kafka consumer instance"""
     conf = {
-        'bootstrap.servers': 'localhost:9092',
+        'bootstrap.servers': 'kafka:9092',
         'group.id': f'flask_consumer_{int(time.time())}',
         'auto.offset.reset': 'latest',
         'session.timeout.ms': 6000,
@@ -228,4 +228,4 @@ def debug():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=True, host='0.0.0.0',port=5001,use_reloader=False)
